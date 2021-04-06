@@ -1,9 +1,9 @@
-
+<!DOCTYPE html>
 <html>
     <head><title>Amerikaens translator</title></head>
 <body>
 
-<h3>Wannabee's simple Dutch to Amerikaens 'translator'</h3>
+<h3>A simple Dutch to Amerikaens 'translator'</h3>
 
 Enter Dutch text here<br>
 <textarea id='b4' style='width:100%;height:200px';>
@@ -13,15 +13,27 @@ Enter Dutch text here<br>
 
 <script>
 const lexicon = {
-    'ik':'äk',
-    'heeft':    'has',
-    'hebben':   'haw',
-    'zijn':     'is',
-    'mes' :     'kütü',
-    'messen' :  'kütus', 
-    'van' : 'f\'n',
+    // basics
+    'ik':           'äk',
+    'heeft':        'has',
+    'hebben':       'haw',
+    'zijn':         'is', 
+    'van' :         'v\'n',
+    // vocab
+    'mes' :         'kütü',
+    'messen' :      'kütus',
+    'buffel':       'bufaloo',
+    'buffels':      'bufaloos',
+    'eland':        'wapiti',
+    'elanden':      'wapitis',
+    // n grams
+    'ze is':        'zÿ is'
 };
 const ortho = {
+    
+        'd\\b' : 'dt',  // d's that occur at the end of a word
+        'kk\\b' : 'ck',  // d's that occur at the end of a word
+        'tie\\b' : 'sie',  // d's that occur at the end of a word
         'ij' : 'ÿ', 
         'ui' : 'uy',
         'oe' : 'ü',
@@ -31,16 +43,21 @@ const ortho = {
         'ee' : 'î',
         'z' : 's',
         'cht' : 'gt',
+        'kk' : 'ck',
     };
 function amerikaensify() {
+  var isUpperCase = x => x.toUpperCase() && x != x.toLowerCase();
   var txt = document.getElementById('b4').value;
-    Object.keys(lexicon).forEach(key => {
-        txt = txt.replace(new RegExp(key,'gm'), lexicon[key]);
-        console.log(key, lexicon[key]);
+    Object.keys(lexicon).forEach(word => {
+        // Only replace substrings that are not part of larger words.
+        const pattern = '\\b'+word+'\\b';
+        var replacement = lexicon[word];
+        txt = txt.replace(new RegExp(pattern,'igm'), replacement);
     });
-    Object.keys(ortho).forEach(key => {
-        txt = txt.replace(new RegExp(key,'gm'), ortho[key]);
-        console.log(key, ortho[key]);
+    Object.keys(ortho).forEach(word => {
+        var pattern = new RegExp(word,'igm')
+        txt = txt.replace(pattern, ortho[word]);
+        console.log(word, ortho[word]);
     });
   document.getElementById('after').innerHTML = txt;
 }
