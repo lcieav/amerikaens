@@ -1,0 +1,52 @@
+
+<html>
+    <head><title>Amerikaens translator</title></head>
+<body>
+
+<h3>Wannabee's simple Dutch to Amerikaens 'translator'</h3>
+
+Enter Dutch text here<br>
+<textarea id='b4' style='width:100%;height:200px';>
+</textarea>
+<button type='button' onclick='amerikaensify()'>Translate</button>
+<p id='after'></p>
+
+<script>
+const lexicon = {
+    'heeft':    'has',
+    'hebben':   'haw',
+    'zijn':     'is',
+    'mes' :     'kütü',
+    'messen' :  'kütus', 
+    'van' : 'f\'n',
+};
+const ortho = {
+        'ij' : 'ÿ', 
+        'ui' : 'uy',
+        'oe' : 'ü',
+        'oo' : 'ö',
+        'aa' : 'ae',
+        'ei' : 'ey',
+        'ee' : 'î',
+        'z' : 's',
+        'cht' : 'gt',
+    };
+function amerikaensify() {
+  var txt = document.getElementById('b4').value;
+    Object.keys(lexicon).forEach(key => {
+        txt = txt.replace(new RegExp(key,'gm'), lexicon[key]);
+        console.log(key, lexicon[key]);
+    });
+    Object.keys(ortho).forEach(key => {
+        txt = txt.replace(new RegExp(key,'gm'), ortho[key]);
+        console.log(key, ortho[key]);
+    });
+  document.getElementById('after').innerHTML = txt;
+}
+
+
+</script>
+
+</body>
+</html>
+
